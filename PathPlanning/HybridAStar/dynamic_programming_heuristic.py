@@ -52,6 +52,7 @@ def calc_distance_heuristic(gx, gy, ox, oy, resolution, rr):
     rr: robot radius[m]
     """
 
+    # Map the obstacle positions to the grid
     goal_node = Node(round(gx / resolution), round(gy / resolution), 0.0, -1)
     ox = [iox / resolution for iox in ox]
     oy = [ioy / resolution for ioy in oy]
@@ -78,7 +79,7 @@ def calc_distance_heuristic(gx, gy, ox, oy, resolution, rr):
 
         # show graph
         if show_animation:  # pragma: no cover
-            plt.plot(current.x * resolution, current.y * resolution, "xc")
+            plt.plot(current.x * resolution, current.y * resolution, ".g")
             # for stopping simulation with the esc key.
             plt.gcf().canvas.mpl_connect(
                 'key_release_event',
@@ -132,7 +133,7 @@ def verify_node(node, obstacle_map, min_x, min_y, max_x, max_y):
 
     return True
 
-
+# Use true and false to represent the obstacle map.
 def calc_obstacle_map(ox, oy, resolution, vr):
     min_x = round(min(ox))
     min_y = round(min(oy))

@@ -285,15 +285,15 @@ def main():
     import matplotlib.pyplot as plt
     from utils.plot import plot_arrow
 
-    start_x = 1.0  # [m]
-    start_y = 1.0  # [m]
-    start_yaw = np.deg2rad(45.0)  # [rad]
+    start_x = -1.0  # [m]
+    start_y = -4.0  # [m]
+    start_yaw = np.deg2rad(85.0)  # [rad]
 
-    end_x = -3.0  # [m]
-    end_y = -3.0  # [m]
-    end_yaw = np.deg2rad(-45.0)  # [rad]
+    end_x = 5.0  # [m]
+    end_y = 5.0  # [m]
+    end_yaw = np.deg2rad(-25.0)  # [rad]
 
-    curvature = 1.0
+    curvature = 0.5
 
     path_x, path_y, path_yaw, mode, lengths = plan_dubins_path(start_x,
                                                                start_y,

@@ -22,7 +22,7 @@ WB = 3.0  # rear to front wheel
 W = 2.0  # width of car
 LF = 3.3  # distance from rear to vehicle front end
 LB = 1.0  # distance from rear to vehicle back end
-MAX_STEER = 0.6  # [rad] maximum steering angle
+MAX_STEER = pi/5  # [rad] maximum steering angle
 
 BUBBLE_DIST = (LF - LB) / 2.0  # distance from rear to center of vehicle.
 BUBBLE_R = np.hypot((LF + LB) / 2.0, W / 2.0)  # bubble radius
@@ -98,6 +98,7 @@ def move(x, y, yaw, distance, steer, L=WB):
     x += distance * cos(yaw)
     y += distance * sin(yaw)
     yaw += pi_2_pi(distance * tan(steer) / L)  # distance/2
+    # yaw += pi_2_pi(steer) 
 
     return x, y, yaw
 
