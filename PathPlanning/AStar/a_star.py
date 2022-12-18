@@ -10,7 +10,7 @@ See Wikipedia article (https://en.wikipedia.org/wiki/A*_search_algorithm)
 """
 
 import math
-
+import numpy as np
 import matplotlib.pyplot as plt
 
 show_animation = True
@@ -85,8 +85,8 @@ class AStarPlanner:
 
             # show graph
             if show_animation:  # pragma: no cover
-                plt.plot(self.calc_grid_position(current.x, self.min_x),
-                         self.calc_grid_position(current.y, self.min_y), "xc")
+                # plt.plot(self.calc_grid_position(current.x, self.min_x),
+                #          self.calc_grid_position(current.y, self.min_y), "xc")
                 # for stopping simulation with the esc key.
                 plt.gcf().canvas.mpl_connect('key_release_event',
                                              lambda event: [exit(
@@ -229,15 +229,25 @@ class AStarPlanner:
 
         return motion
 
+def plot_arrow(x, y, yaw, length=1.0, width=0.5, fc="r", ec="k"):
+    """Plot arrow."""
+    if not isinstance(x, float):
+        for (i_x, i_y, i_yaw) in zip(x, y, yaw):
+            plot_arrow(i_x, i_y, i_yaw)
+    else:
+        plt.arrow(x, y, length * math.cos(yaw), length * math.sin(yaw),
+                  fc=fc, ec=ec, head_width=width, head_length=width, alpha=0.4)
 
 def main():
     print(__file__ + " start!!")
 
     # start and goal position
     sx = 10.0  # [m]
-    sy = 10.0  # [m]
+    sy = 40.0  # [m]
+    syaw = np.deg2rad(-45.0)
     gx = 50.0  # [m]
-    gy = 50.0  # [m]
+    gy = 30.0  # [m]
+    gyaw = np.deg2rad(40.0)
     grid_size = 2.0  # [m]
     robot_radius = 1.0  # [m]
 
@@ -255,12 +265,12 @@ def main():
     for i in range(-10, 61):
         ox.append(-10.0)
         oy.append(i)
-    for i in range(-10, 40):
+    for i in range(0, 20):
         ox.append(20.0)
-        oy.append(i)
-    for i in range(0, 40):
+        oy.append(20+i)
+    for i in range(0, 20):
         ox.append(40.0)
-        oy.append(60.0 - i)
+        oy.append(40.0 - i)
 
     if show_animation:  # pragma: no cover
         plt.plot(ox, oy, ".k")
@@ -274,7 +284,9 @@ def main():
 
     if show_animation:  # pragma: no cover
         plt.plot(rx, ry, "-r")
-        plt.pause(0.001)
+        plot_arrow(sx,sy,syaw,length=3)
+        plot_arrow(gx,gy,gyaw,length=3)
+        # plt.pause(0.001)
         plt.show()
 
 

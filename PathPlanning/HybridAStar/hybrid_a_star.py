@@ -18,7 +18,7 @@ sys.path.append(str(pathlib.Path(__file__).parent.parent))
 from dynamic_programming_heuristic import calc_distance_heuristic
 from ReedsSheppPath import reeds_shepp_path_planning as rs
 
-from car import move, check_car_collision, MAX_STEER, WB, plot_car, BUBBLE_R
+from car import *
 
 XY_GRID_RESOLUTION = 2.0  # [m]
 YAW_GRID_RESOLUTION = np.deg2rad(5.0)  # [rad]
@@ -31,7 +31,7 @@ STEER_CHANGE_COST = 2.0  # steer angle change penalty cost
 STEER_COST = 0.0         # steer angle not zero cost
 H_COST = 2.5             # Heuristic cost
 
-show_animation = True
+show_animation = False
 
 
 class Node:
@@ -169,7 +169,7 @@ def analytic_expansion(current, goal, ox, oy, kd_tree):
     goal_y = goal.y_list[-1]
     goal_yaw = goal.yaw_list[-1]
 
-    max_curvature = math.tan(MAX_STEER) / WB / 1.2
+    max_curvature = math.tan(MAX_STEER) / WB / 1.5
     paths = rs.calc_paths(start_x, start_y, start_yaw,
                           goal_x, goal_y, goal_yaw,
                           max_curvature, step_size=MOTION_RESOLUTION)
@@ -430,16 +430,16 @@ def main():
     for i in range(61):
         ox.append(0.0)
         oy.append(i)
-    for i in range(40):
+    for i in range(20):
         ox.append(20.0)
-        oy.append(i)
-    for i in range(40):
+        oy.append(20+i)
+    for i in range(20):
         ox.append(40.0)
-        oy.append(60.0 - i)
+        oy.append(20+i)
 
     # Set Initial parameters
-    start = [10.0, 10.0, np.deg2rad(90.0)]
-    goal = [50.0, 50.0, np.deg2rad(40.0)]
+    start = [10.0, 40.0, np.deg2rad(-45.0)]
+    goal = [50.0, 30.0, np.deg2rad(40.0)]
 
     print("start : ", start)
     print("goal : ", goal)
@@ -471,6 +471,8 @@ def main():
     else: 
         plt.cla()
         plt.plot(ox, oy, "sk")
+        plot_arrow(start[0],start[1],start[2],length=3)
+        plot_arrow(goal[0],goal[1],goal[2],length=3)
         plt.plot(x, y, "-r", label="Hybrid A* path")
         plt.grid(True)
         plt.axis("equal")
